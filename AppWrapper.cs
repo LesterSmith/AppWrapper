@@ -8,13 +8,6 @@ namespace AppWrapper
 {
     public class AppWrapper
     {
-        public enum ReporterBreak
-        {
-            None = 0,
-            Day = 1,
-            Week = 2,
-            Month = 3
-        }
 
         public enum WindowEventType
         {
