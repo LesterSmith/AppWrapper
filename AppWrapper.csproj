@@ -31,6 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BusinessObjects">
+      <HintPath>..\BusinessObjects\bin\Debug\BusinessObjects.dll</HintPath>
+    </Reference>
+    <Reference Include="DataHelpers">
+      <HintPath>..\DataHelpers\bin\Debug\DataHelpers.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />

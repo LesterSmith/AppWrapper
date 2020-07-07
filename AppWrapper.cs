@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Configuration;
 namespace AppWrapper
 {
-    public class AppWrapper
+    public static class AppWrapper
     {
 
         public enum WindowEventType
@@ -18,11 +18,6 @@ namespace AppWrapper
         {
             get { return ConfigurationManager.ConnectionStrings[DBName].ConnectionString; }
         }
-        //public static string devenv = "devenv";
-        //public const string VSCode = "Code";
-        //public const string VSCodeUnknown = "vscodeUnknown";
-        //public const string VSUnknown = "VSUnknown";
-        //public const string appUnknown = "appUnknown";
         public const string AppName = "DevTracker";
         public const string Settings = "Settings";
         public const string MainOnTop = "MainOnTop";

@@ -7,12 +7,12 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
-
 namespace AppWrapper
 {
     public static class Util
     {
-        /// <summary>        /// Returns string from front of "name - nbr"
+        /// <summary>
+        /// Returns string from front of "name - nbr"
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
@@ -59,22 +59,21 @@ namespace AppWrapper
             return text.Substring(0, text.IndexOf(delimiter));
         }
         const string eol = "\r\n";
-        public static void LogError(Exception ex, bool showMsgBox = false)
+        public static void LogError(Exception ex, bool showMsgBox, string moduleAndMethod)
         {
             try
             {
-                string msg = "Error------" + eol +
+                string msg = $"Error Message from {moduleAndMethod}: " +
                             ex.Message + eol +
-                           "Error Type-----" + eol + ex.GetType().ToString() + eol +
-                           "Error Details-----" + eol + ex.ToString();
+                           "Error Type: " + ex.GetType().ToString() + eol +
+                           "Error Details: " + eol + ex.ToString();
                 if (showMsgBox)
                     MessageBox.Show(msg, "Program Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
 
                 try
                 {
                     StackTrace st = new StackTrace(true);
-                    msg += "Stack Trace------" + eol + st.ToString();
+                    msg += "Stack Trace: " + eol + st.ToString();
                 }
                 catch (Exception)
                 {
@@ -87,24 +86,25 @@ namespace AppWrapper
             }
         }
 
-        public static void LogError(string err, bool showMsgBox = false)
+        public static void LogError(string err, bool showMsgBox, string moduleAndMethod)
         {
-            string msg = "Error------" + eol + err + eol;
+            string msg = $"Error Message from {moduleAndMethod}: " + err + eol;
             if (showMsgBox)
                 MessageBox.Show(msg, "Program Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             WriteErrorLog(new StringBuilder(msg));
+        }
+
+        private static Tuple<string, string> SplitModuleFromMethod(string moduleAndMethod)
+        {
+            string[] s = moduleAndMethod.Split('.');
+            return Tuple.Create(s[0], s.Length > 1 ? s[1] : string.Empty);
         }
 
         private static void WriteErrorLog(StringBuilder sb)
         {
             string fn = GetErrorFilename();
             if (fn == null) return;
-            using (var sw = new StringWriter(sb))
-            {
-                sw.Write(sb.ToString());
-                sw.Flush();
-                sw.Close();
-            }
+            File.WriteAllText(fn, sb.ToString());
         }
         private static string GetErrorFilename()
         {
@@ -121,9 +121,10 @@ namespace AppWrapper
                 return null;
             }
         }
+
         private static string GetExePath()
         {
-            return Assembly.GetExecutingAssembly().Location;
+            return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         }
     }
 }
