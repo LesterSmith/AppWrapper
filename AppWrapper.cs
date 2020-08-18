@@ -6,9 +6,16 @@ using System.Threading.Tasks;
 using System.Configuration;
 namespace AppWrapper
 {
+    public enum PermissionLevel
+    {
+        None,
+        Admin,
+        Manager,
+        Developer
+    }
     public static class AppWrapper
     {
-
+        public static PermissionLevel UserPermissionLevel { get; set; }
         public enum WindowEventType
         {
             EventHook = 0, // SetWinEventHook to use events
